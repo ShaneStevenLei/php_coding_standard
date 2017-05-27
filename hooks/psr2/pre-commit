@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [[ ! -f $HOME/.composer/vendor/bin/phpcs ]]; then
+    echo -e "\x1b[1m\x1b[33m\x1b[41m\n\nphpcs is not installed!\x1b[0m"
+fi
+
+export PATH="$HOME/.composer/vendor/bin:$PATH"
+
+for file in `git diff HEAD --name-only --diff-filter=ACMR | grep --color=none "\.php$" | grep -v '\bviews\b' | grep -v '\bmigrations\b'`;
+do
+    error=`phpcs --colors --standard=PSR2 --encoding=utf-8 $file | grep -v ' 0 ERRORS' | grep --color=none ERROR 2>&1`
+    if [ -z "$error" ]; then
+        continue
+    else
+        echo -e "\x1b[1m\x1b[33m\x1b[41m\n\nCoding Standard (PSR2) Test Failed\x1b[0m"
+        phpcs --colors --standard=PSR2 --encoding=utf-8 $file
+        exit 1
+    fi
+done
