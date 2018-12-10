@@ -2,6 +2,8 @@
 
 if [[ ! -f $HOME/.composer/vendor/bin/phpcs ]]; then
     echo -e "\x1b[1m\x1b[33m\x1b[41m\n\nphpcs is not installed!\x1b[0m"
+    echo "You should install it by composer with follow this command:"
+    echo 'composer global require "squizlabs/php_codesniffer=*"'
 fi
 
 export PATH="$HOME/.composer/vendor/bin:$PATH"
